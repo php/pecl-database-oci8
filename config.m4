@@ -169,6 +169,40 @@ EOF
   esac
 ])
 
+dnl
+dnl OCI8_NOTICE()
+dnl
+dnl Warn about Apache if oci8 extension is enabled on Linux without PHP_SIGCHILD.
+dnl
+AC_DEFUN([OCI8_NOTICE],[
+  old_CPPFLAGS=$CPPFLAGS
+  CPPFLAGS="$CPPFLAGS $INCLUDES"
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include "main/php_config.h"]],[[
+    #if defined(PHP_SIGCHILD) && PHP_SIGCHILD
+    #error "PHP_SIGCHILD is 1"
+    #endif
+  ]])],[php_cv_symbol_PHP_SIGCHILD=no],[php_cv_symbol_PHP_SIGCHILD=yes])
+  CPPFLAGS=$old_CPPFLAGS
+
+AC_CONFIG_COMMANDS_POST([
+    if test "x$php_cv_symbol_PHP_SIGCHILD" != "xyes"; then
+      if test "$PHP_OCI8_INSTANT_CLIENT" = "no"; then
+        AC_MSG_NOTICE([
++--------------------------------------------------------------------+
+| Notice:                                                            |
+| If you encounter <defunc> processes when using a local Oracle      |
+| database, set the value BEQUEATH_DETACH=YES in Oracle Net's        |
+| sqlnet.ora file on the PHP host, or set the environment variable   |
+| BEQUEATH_DETACH to YES before starting Apache.  If the problem     |
+| still occurs, then recompile PHP and specify --enable-sigchild     |
+| when configuring.                                                  |
++--------------------------------------------------------------------+
+])
+      fi
+    fi
+  ])
+])
+
 dnl --with-oci8=shared,instantclient,/path/to/client/dir/lib
 dnl or
 dnl --with-oci8=shared,/path/to/oracle/home
@@ -431,4 +465,6 @@ if test "$PHP_OCI8" != "no"; then
     PHP_SUBST_OLD(OCI8_ORACLE_VERSION)
 
   fi
+
+  OCI8_NOTICE()
 fi
