@@ -98,5 +98,5 @@ file md5:80bb3201e2a8bdcb8ab3e1a44a82bb8a
 Test 4 - wrong type
 bool(true)
 
-Warning: oci_fetch(): ORA-00932: inconsistent datatypes%s on line %d
+Warning: oci_fetch(): ORA-00932: %r(inconsistent datatypes|expression is of data type)%r%s on line %d
 Done

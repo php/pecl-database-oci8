@@ -169,7 +169,7 @@ array(4) {
 bool(false)
 Test 9
 
-Warning: oci_connect(): ORA-%d: TNS:%s in %s on line %d
+Warning: oci_connect(): ORA-%d: %r(TNS:%s|Cannot connect to database\. Cannot find alias d)%r in %s on line %d
 array(4) {
   ["code"]=>
   int(%d)
@@ -183,7 +183,7 @@ array(4) {
 bool(false)
 Test 10
 
-Warning: oci_connect(): ORA-%d: TNS:%s in %s on line %d
+Warning: oci_connect(): ORA-%d: %r(TNS:%s|Cannot connect to database\. Cannot find alias d)%r in %s on line %d
 array(4) {
   ["code"]=>
   int(%d)
