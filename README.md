@@ -4,7 +4,7 @@ Use the OCI8 extension to access Oracle Database.
 
 Documentation is at https://www.php.net/oci8
 
-Use `pecl install oci8` to install for PHP 8.2.
+Use `pecl install oci8` to install for PHP 8.2 and PHP 8.3.
 
 Use `pecl install oci8-3.2.1` to install for PHP 8.1.
 
