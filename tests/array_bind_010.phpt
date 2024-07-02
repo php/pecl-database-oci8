@@ -24,7 +24,7 @@ var_dump($array);
 echo "Done\n";
 ?>
 --EXPECTF--
-Warning: oci_bind_array_by_name(): ORA-01036: illegal variable name/number in %s on line %d
+Warning: oci_bind_array_by_name(): ORA-01036: %r(illegal variable name\/number|unrecognized bind variable :c1 passed to the bind call)%r in %s on line %d
 array(5) {
   [0]=>
   string(1) "1"
