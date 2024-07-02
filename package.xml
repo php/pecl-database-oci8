@@ -110,8 +110,10 @@ Oracle's standard cross-version connectivity applies.  For example, PHP OCI8 lin
     <file name="bind_long.phpt" role="test" />
     <file name="bind_long_raw.phpt" role="test" />
     <file name="bind_misccoltypes_errs.phpt" role="test" />
+    <file name="bind_misccoltypes_errs_21.phpt" role="test" />
     <file name="bind_misccoltypes.phpt" role="test" />
     <file name="bind_number.phpt" role="test" />
+    <file name="bind_number_21.phpt" role="test" />
     <file name="bind_query.phpt" role="test" />
     <file name="bind_raw_2.phpt" role="test" />
     <file name="bind_raw.phpt" role="test" />

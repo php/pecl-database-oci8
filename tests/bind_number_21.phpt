@@ -5,11 +5,12 @@ oci8
 --SKIPIF--
 <?php
 require_once 'skipifconnectfailure.inc';
+
 require __DIR__.'/connect.inc';
 
 preg_match('/.*Release ([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)*/', oci_server_version($c), $matches);
-if ((isset($matches[0]) && $matches[1] < 23)) {
-    die("skip expected output only valid when using Oracle Database 23ai or later");
+if ((isset($matches[0]) && $matches[1] >= 23)) {
+    die("skip expected output only valid when using Oracle Database 21c or earlier");
 }
 ?>
 --INI--
@@ -140,8 +141,7 @@ oci8_test_sql_execute($c, $stmtarray);
 --EXPECTF--
 Test 1 - invalid number
 
-Warning: oci_execute(): ORA-01722: unable to convert string value containing 'H' to a number: 
-ORA-03302: (ORA-01722 details) invalid string value: Hello in %s on line %d
+Warning: oci_execute(): ORA-01722: %s in %sbind_number.php on line %d
 array(1) {
   ["NUMBER_T6"]=>
   array(0) {

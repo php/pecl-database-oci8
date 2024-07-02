@@ -8,3 +8,4 @@ config.nice
 configure
 configure.ac
 run-tests.php
+tests/details_local.inc

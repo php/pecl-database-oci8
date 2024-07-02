@@ -11,6 +11,8 @@
  * string like hostname:port/service_name:POOLED
  */
 
+putenv('ORA_SUPPRESS_ERROR_URL=TRUE');                // suppress Oracle Database 23ai error message URLs
+
 if (file_exists(dirname(__FILE__)."/details_local.inc")) {
     include dirname(__FILE__)."/details_local.inc";   // this file is not part of the source distribution; make it your own local variant of details.inc
 } else {
