@@ -18,7 +18,7 @@ require __DIR__.'/connect.inc';
 
 $stmtarray = array(
     "drop table xmltype_02_tab",
-    "create table xmltype_02_tab (warehouse_id number, warehouse_spec xmltype)",
+    "create table xmltype_02_tab (warehouse_id number, warehouse_spec xmltype) xmltype warehouse_spec store as basicfile clob",
 );
 
 oci8_test_sql_execute($c, $stmtarray);

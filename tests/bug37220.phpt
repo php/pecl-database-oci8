@@ -16,7 +16,7 @@ require __DIR__.'/connect.inc';
 // Initialization
 
 $stmtarray = array(
-    "create table bug37220_tab( mycolumn xmltype not null)",
+    "create table bug37220_tab (mycolumn xmltype not null) xmltype mycolumn store as basicfile clob",
     "insert into bug37220_tab values(xmltype('<THETAG myID=\"1234\"></THETAG>'))"
 );
 

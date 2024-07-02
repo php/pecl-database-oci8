@@ -91,7 +91,7 @@ function readxmltab_im($c)
 function createxmltab($c)  // create table w/ field of XML type
 {
     @dropxmltab($c);
-    $stmt = oci_parse($c, "create table bug43497_tab (id number primary key, xml xmltype)");
+    $stmt = oci_parse($c, "create table bug43497_tab (id number primary key, xml xmltype) xmltype xml store as basicfile clob");
     oci_execute($stmt);
 }
 

@@ -9,8 +9,8 @@ require_once 'skipifconnectfailure.inc';
 require __DIR__.'/connect.inc';
 
 preg_match('/.*Release ([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)*/', oci_server_version($c), $matches);
-if ((isset($matches[0]) && $matches[1] < 23)) {
-    die("skip expected output only valid when using Oracle Database 23ai or later");
+if ((isset($matches[0]) && $matches[1] >= 23)) {
+    die("skip expected output only valid when using Oracle Database 21c or earlier");
 }
 ?>
 --FILE--
@@ -139,8 +139,7 @@ array(1) {
 
 Test 2 insert numbers
 
-Warning: oci_execute(): ORA-01722: unable to convert string value containing 'H' to a number: 
-ORA-03302: (ORA-01722 details) invalid string value: Hello in %s on line %d
+Warning: oci_execute(): ORA-01722: %s in %sbind_misccoltypes_errs.php on line %d
 array(1) {
   ["NUMBER_T6"]=>
   array(0) {
@@ -157,8 +156,7 @@ Warning: oci_execute(): ORA-12899: %r(%s "%s"."BIND_MISCCOLTYPES_ERRS_TAB"."VARC
 
 Test 5 - invalid number
 
-Warning: oci_execute(): ORA-01722: unable to convert string value containing 'A' to a number: 
-ORA-03302: (ORA-01722 details) invalid string value: ABC in %s on line %d
+Warning: oci_execute(): ORA-01722: %s in %sbind_misccoltypes_errs.php on line %d
 
 Test 6 - insert a VARCHAR2 with SQLT_BIN
 

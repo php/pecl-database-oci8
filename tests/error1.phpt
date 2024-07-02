@@ -5,6 +5,8 @@ oci8
 --FILE--
 <?php
 
+putenv('ORA_SUPPRESS_ERROR_URL=TRUE');                // suppress Oracle Database 23ai error message URLs
+
 var_dump(oci_connect("some", "some", "some"));
 var_dump(oci_error());
 
