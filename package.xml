@@ -436,6 +436,7 @@ Oracle's standard cross-version connectivity applies.  For example, PHP OCI8 lin
    <file name="php_oci8_int.h" role="src" />
    <file name="oci8.stub.php" role="src" />
    <file name="oci8_arginfo.h" role="src" />
+   <file name="oci8.ini" role="doc" />
    <file name="README.md" role="doc" />
   </dir> <!-- / -->
  </contents>
