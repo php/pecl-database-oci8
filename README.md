@@ -12,10 +12,20 @@ Use `pecl install oci8-3.0.1` to install for PHP 8.0.
 
 Use `pecl install oci8-2.2.0` to install for PHP 7.
 
+If your PHP was built with DTrace enabled, then set the environment variable
+PHP_DTRACE=yes before running `pecl install oci8`. For example, on Linux:
+
+    export PHP_DTRACE=yes
+
+You may additionally need the dtrace-devel or systemtap-sdt-devel package
+installed.
+
 The PHP OCI8 extension can be linked with Oracle client libraries from Oracle
 Database 11.2 or later. These libraries are found in your database
 installation, or in the free Oracle Instant Client from
+
   https://www.oracle.com/database/technologies/instant-client.html
+
 Install the 'Basic' or 'Basic Light' Instant Client package. If building from
 source, then also install the SDK package.
 
