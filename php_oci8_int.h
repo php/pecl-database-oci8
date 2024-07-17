@@ -53,9 +53,13 @@
 /* }}} */
 
 #include "ext/standard/php_string.h"
+#if PHP_MAJOR_VERSION > 8 || (PHP_MAJOR_VERSION == 8 && PHP_MINOR_VERSION > 2)
 ZEND_DIAGNOSTIC_IGNORED_START("-Wstrict-prototypes")
+#endif
 #include <oci.h>
+#if PHP_MAJOR_VERSION > 8 || (PHP_MAJOR_VERSION == 8 && PHP_MINOR_VERSION > 2)
 ZEND_DIAGNOSTIC_IGNORED_END
+#endif
 
 #if !defined(OCI_MAJOR_VERSION) || OCI_MAJOR_VERSION < 11 || ((OCI_MAJOR_VERSION == 11) && (OCI_MINOR_VERSION < 2))
 #error This version of PHP OCI8 requires Oracle Client libraries from 11.2 or later.
