@@ -141,7 +141,7 @@ oci8_test_sql_execute($c, $stmtarray);
 --EXPECTF--
 Test 1 - invalid number
 
-Warning: oci_execute(): ORA-01722: %s in %sbind_number.php on line %d
+Warning: oci_execute(): ORA-01722: %s in %sbind_number_21.php on line %d
 array(1) {
   ["NUMBER_T6"]=>
   array(0) {

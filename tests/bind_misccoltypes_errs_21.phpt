@@ -130,7 +130,7 @@ oci_close($c);
 --EXPECTF--
 Test 1 insert numbers
 
-Warning: oci_execute(): ORA-01438: %s in %sbind_misccoltypes_errs.php on line %d
+Warning: oci_execute(): ORA-01438: %s in %sbind_misccoltypes_errs_21.php on line %d
 array(1) {
   ["NUMBER_T6"]=>
   array(0) {
@@ -139,7 +139,7 @@ array(1) {
 
 Test 2 insert numbers
 
-Warning: oci_execute(): ORA-01722: %s in %sbind_misccoltypes_errs.php on line %d
+Warning: oci_execute(): ORA-01722: %s in %sbind_misccoltypes_errs_21.php on line %d
 array(1) {
   ["NUMBER_T6"]=>
   array(0) {
@@ -148,19 +148,19 @@ array(1) {
 
 Test 3 - too long CHAR
 
-Warning: oci_execute(): ORA-12899: %r(%s "%s"."BIND_MISCCOLTYPES_ERRS_TAB"."CHAR_T" \(%s: 2, %s: 1\)|String data right truncation)%r in %sbind_misccoltypes_errs.php on line %d
+Warning: oci_execute(): ORA-12899: %r(%s "%s"."BIND_MISCCOLTYPES_ERRS_TAB"."CHAR_T" \(%s: 2, %s: 1\)|String data right truncation)%r in %sbind_misccoltypes_errs_21.php on line %d
 
 Test 4 - too long VARCHAR2
 
-Warning: oci_execute(): ORA-12899: %r(%s "%s"."BIND_MISCCOLTYPES_ERRS_TAB"."VARCHAR2_T10" \(%s: 11, %s: 10\)|%s data right truncation)%r in %sbind_misccoltypes_errs.php on line %d
+Warning: oci_execute(): ORA-12899: %r(%s "%s"."BIND_MISCCOLTYPES_ERRS_TAB"."VARCHAR2_T10" \(%s: 11, %s: 10\)|%s data right truncation)%r in %sbind_misccoltypes_errs_21.php on line %d
 
 Test 5 - invalid number
 
-Warning: oci_execute(): ORA-01722: %s in %sbind_misccoltypes_errs.php on line %d
+Warning: oci_execute(): ORA-01722: %s in %sbind_misccoltypes_errs_21.php on line %d
 
 Test 6 - insert a VARCHAR2 with SQLT_BIN
 
-Warning: oci_execute(): ORA-12899: %r(%s "%s"."BIND_MISCCOLTYPES_ERRS_TAB"."VARCHAR2_T10" \(%s: 12, %s: 10\)|String data right truncation)%r in %sbind_misccoltypes_errs.php on line %d
+Warning: oci_execute(): ORA-12899: %r(%s "%s"."BIND_MISCCOLTYPES_ERRS_TAB"."VARCHAR2_T10" \(%s: 12, %s: 10\)|String data right truncation)%r in %sbind_misccoltypes_errs_21.php on line %d
 array(1) {
   ["VARCHAR2_T10"]=>
   array(0) {
@@ -169,7 +169,7 @@ array(1) {
 
 Test 7 - insert a VARCHAR2 with SQLT_LBI
 
-Warning: oci_execute(): ORA-12899: %r(%s "%s"."BIND_MISCCOLTYPES_ERRS_TAB"."VARCHAR2_T10" \(%s: 12, %s: 10\)|String data right truncation)%r in %sbind_misccoltypes_errs.php on line %d
+Warning: oci_execute(): ORA-12899: %r(%s "%s"."BIND_MISCCOLTYPES_ERRS_TAB"."VARCHAR2_T10" \(%s: 12, %s: 10\)|String data right truncation)%r in %sbind_misccoltypes_errs_21.php on line %d
 array(1) {
   ["VARCHAR2_T10"]=>
   array(0) {
