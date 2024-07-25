@@ -412,6 +412,7 @@ Oracle's standard cross-version connectivity applies.  For example, PHP OCI8 lin
     <file name="select_null.phpt" role="test" />
     <file name="serverversion.phpt" role="test" />
     <file name="skipif.inc" role="test" />
+    <file name="skipifconnectfailure.inc" role="test" />
     <file name="statement_cache.phpt" role="test" />
     <file name="statement_type.phpt" role="test" />
     <file name="test.gif" role="test" />
