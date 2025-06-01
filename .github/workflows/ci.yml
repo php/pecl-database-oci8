@@ -22,6 +22,12 @@ jobs:
           - version: 8.5
             branch: master
     services:
+      oracle-11:
+        image: wnameless/oracle-xe-11g-r2
+        ports:
+          - 1511:1521
+        env:
+          ORACLE_ALLOW_REMOTE: true
       oracle-18:
         image: gvenzl/oracle-xe:18-slim-faststart
         ports:
@@ -80,15 +86,22 @@ jobs:
           echo 'extension=oci8.so' | sudo tee /etc/php/${{ matrix.version }}/mods-available/oci8.ini
           sudo phpenmod -v ${{ matrix.version }} oci8
           php --ri oci8
+      - name: Run tests /w Oracle 11
+        run: php php-src/run-tests.php --show-diff --show-slow 1000 --set-timeout 120 tests
+        env:
+          PHP_OCI8_TEST_USER: system
+          PHP_OCI8_TEST_PASS: pass
+          PHP_OCI8_TEST_DB: 0.0.0.0:1511/FREEPDB1
       - name: Run tests /w Oracle 18
-        run: php php-src/run-tests.php --set-timeout 600 tests
+        if: success() || failure()
+        run: php php-src/run-tests.php --show-diff --show-slow 1000 --set-timeout 120 tests
         env:
           PHP_OCI8_TEST_USER: system
           PHP_OCI8_TEST_PASS: pass
           PHP_OCI8_TEST_DB: 0.0.0.0:1518/FREEPDB1
       - name: Run tests /w Oracle 23
         if: success() || failure()
-        run: php php-src/run-tests.php --set-timeout 600 tests
+        run: php php-src/run-tests.php --show-diff --show-slow 1000 --set-timeout 120 tests
         env:
           PHP_OCI8_TEST_USER: system
           PHP_OCI8_TEST_PASS: pass
