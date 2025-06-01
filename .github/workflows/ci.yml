@@ -1,0 +1,150 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+  linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - version: 8.2
+            branch: PHP-8.2
+          - version: 8.3
+            branch: PHP-8.3
+          - version: 8.4
+            branch: PHP-8.4
+          - version: 8.5
+            branch: master
+    services:
+      oracle-11:
+        image: wnameless/oracle-xe-11g-r2
+        ports:
+          - 1511:1521
+        env:
+          ORACLE_ALLOW_REMOTE: true
+      oracle-18:
+        image: gvenzl/oracle-xe:18-slim-faststart
+        ports:
+          - 1518:1521
+        env:
+          ORACLE_PASSWORD: my_pass
+        options: >-
+          --health-cmd healthcheck.sh
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+      oracle-23:
+        image: gvenzl/oracle-free:23-slim
+        ports:
+          - 1523:1521
+        env:
+          ORACLE_PASSWORD: my_pass
+        options: >-
+          --health-cmd healthcheck.sh
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup dependencies
+        run: |
+          mkdir -p /opt/oracle
+          for pkg in sdk basiclite; do
+            curl --no-progress-meter -O https://download.oracle.com/otn_software/linux/instantclient/instantclient-$pkg-linuxx64.zip
+            unzip -q -o instantclient-$pkg-linuxx64.zip -d /opt/oracle
+          done
+          mv /opt/oracle/instantclient_* /opt/oracle/instantclient
+          sudo ln -sf /opt/oracle/instantclient/*.so* /usr/lib
+          sudo apt-get -q update && sudo apt-get install libaio-dev -y
+          sudo ln -sf /usr/lib/x86_64-linux-gnu/libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1 >/dev/null 2>&1 || true
+          # fix debug build warning: zend_signal: handler was replaced for signal (2) after startup
+          echo DISABLE_INTERRUPT=on > /opt/oracle/instantclient/network/admin/sqlnet.ora
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Checkout php-src
+        uses: actions/checkout@v4
+        with:
+          repository: php/php-src
+          ref: ${{ matrix.branch }}
+          path: php-src
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{matrix.version}}
+      - name: Build
+        run: |
+          phpize
+          ./configure --with-php-config=$(command -v php-config) --with-oci8=instantclient,/opt/oracle/instantclient
+          make -j$(nproc)
+          sudo make install
+          echo 'extension=oci8.so' | sudo tee /etc/php/${{ matrix.version }}/mods-available/oci8.ini
+          sudo phpenmod -v ${{ matrix.version }} oci8
+          php --ri oci8
+      - name: Run tests /w Oracle 11
+        run: php php-src/run-tests.php --show-diff --show-slow 1000 --set-timeout 120 tests
+        env:
+          PHP_OCI8_TEST_USER: system
+          PHP_OCI8_TEST_PASS: oracle
+          PHP_OCI8_TEST_DB: 0.0.0.0:1511/XE
+      - name: Run tests /w Oracle 18
+        if: success() || failure()
+        run: php php-src/run-tests.php --show-diff --show-slow 1000 --set-timeout 120 tests
+        env:
+          PHP_OCI8_TEST_USER: system
+          PHP_OCI8_TEST_PASS: my_pass
+          PHP_OCI8_TEST_DB: 0.0.0.0:1518/FREEPDB1
+      - name: Run tests /w Oracle 23
+        if: success() || failure()
+        run: php php-src/run-tests.php --show-diff --show-slow 1000 --set-timeout 120 tests
+        env:
+          PHP_OCI8_TEST_USER: system
+          PHP_OCI8_TEST_PASS: my_pass
+          PHP_OCI8_TEST_DB: 0.0.0.0:1523/FREEPDB1
+
+  windows-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.extension-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create matrix
+        id: extension-matrix
+        uses: php/php-windows-builder/extension-matrix@v1
+        with:
+          php-version-list: '8.2, 8.3, 8.4, master'
+
+  windows:
+    needs: windows-matrix
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.windows-matrix.outputs.matrix)}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build
+        uses: php/php-windows-builder/extension@v1
+        with:
+          php-version: ${{ matrix.php-version }}
+          arch: ${{ matrix.arch }}
+          ts: ${{ matrix.ts }}
+          libs: instantclient
+          run-tests: false
+
+  windows-release:
+    runs-on: ubuntu-latest
+    needs: windows
+    if: ${{ github.event_name == 'release' }}
+    steps:
+      - name: Upload release artifact
+        uses: php/php-windows-builder/release@v1
+        with:
+          release: ${{ github.event.release.tag_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
