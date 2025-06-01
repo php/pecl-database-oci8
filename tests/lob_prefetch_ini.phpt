@@ -7,6 +7,10 @@ oci8
 require_once 'skipifconnectfailure.inc';
 $target_dbs = array('oracledb' => true, 'timesten' => false);  // test runs on these DBs
 require __DIR__.'/skipif.inc';
+preg_match('/.*Release ([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)*/', oci_server_version($c), $matches);
+if (isset($matches[0]) && $matches[1] < 12) {
+    die("skip Too slow with Oracle Database 11g for CI");
+}
 ?>
 --INI--
 oci8.prefetch_lob_size=100000
