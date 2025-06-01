@@ -1,0 +1,73 @@
+name: Linux
+on: 
+  - push
+  - pull_request
+  - workflow_dispatch
+jobs:
+  linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - version: 8.2
+            branch: PHP-8.2
+          - version: 8.3
+            branch: PHP-8.3
+          - version: 8.4
+            branch: PHP-8.4
+          - version: 8.5
+            branch: master
+    services:
+      oracle:
+        image: gvenzl/oracle-free:23-slim
+        ports:
+          - 1521:1521
+        env:
+          ORACLE_PASSWORD: pass
+        options: >-
+          --health-cmd healthcheck.sh
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup dependencies
+        run: |
+          mkdir -p /opt/oracle
+          for pkg in sdk basiclite; do
+            curl -O https://download.oracle.com/otn_software/linux/instantclient/instantclient-$pkg-linuxx64.zip
+            unzip -o instantclient-$pkg-linuxx64.zip -d /opt/oracle
+          done
+          mv /opt/oracle/instantclient_* /opt/oracle/instantclient
+          sudo ln -sf /opt/oracle/instantclient/*.so* /usr/lib
+          sudo apt-get update && sudo apt-get install libaio-dev -y
+          sudo ln -sf /usr/lib/x86_64-linux-gnu/libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1 >/dev/null 2>&1 || true
+          # fix debug build warning: zend_signal: handler was replaced for signal (2) after startup
+          echo DISABLE_INTERRUPT=on > /opt/oracle/instantclient/network/admin/sqlnet.ora
+      - name: Checkout oci8
+        uses: actions/checkout@v4
+      - name: Checkout php-src
+        uses: actions/checkout@v4
+        with:
+          repository: php/php-src
+          ref: ${{ matrix.branch }}
+          path: php-src
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{matrix.version}}
+      - name: Build oci8
+        run: |
+          phpize
+          ./configure --with-php-config=$(command -v php-config) --with-oci8=instantclient,/opt/oracle/instantclient
+          make -j$(nproc)
+          sudo make install
+          echo 'extension=oci8.so' | sudo tee /etc/php/${{ matrix.version }}/mods-available/oci8.ini
+          sudo phpenmod -v ${{ matrix.version }} oci8
+          php --ri oci8
+      - name: Run Tests      
+        run: php php-src/run-tests.php --set-timeout 600 tests
+        env:
+          PHP_OCI8_TEST_USER: system
+          PHP_OCI8_TEST_PASS: pass
+          PHP_OCI8_TEST_DB: 0.0.0.0:1521/FREEPDB1
