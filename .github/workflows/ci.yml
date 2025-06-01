@@ -39,12 +39,12 @@ jobs:
         run: |
           mkdir -p /opt/oracle
           for pkg in sdk basiclite; do
-            curl -O https://download.oracle.com/otn_software/linux/instantclient/instantclient-$pkg-linuxx64.zip
-            unzip -o instantclient-$pkg-linuxx64.zip -d /opt/oracle
+            curl --no-progress-meter -O https://download.oracle.com/otn_software/linux/instantclient/instantclient-$pkg-linuxx64.zip
+            unzip -q -o instantclient-$pkg-linuxx64.zip -d /opt/oracle
           done
           mv /opt/oracle/instantclient_* /opt/oracle/instantclient
           sudo ln -sf /opt/oracle/instantclient/*.so* /usr/lib
-          sudo apt-get update && sudo apt-get install libaio-dev -y
+          sudo apt-get -q update && sudo apt-get install libaio-dev -y
           sudo ln -sf /usr/lib/x86_64-linux-gnu/libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1 >/dev/null 2>&1 || true
           # fix debug build warning: zend_signal: handler was replaced for signal (2) after startup
           echo DISABLE_INTERRUPT=on > /opt/oracle/instantclient/network/admin/sqlnet.ora
