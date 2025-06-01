@@ -48,7 +48,7 @@ jobs:
           sudo ln -sf /usr/lib/x86_64-linux-gnu/libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1 >/dev/null 2>&1 || true
           # fix debug build warning: zend_signal: handler was replaced for signal (2) after startup
           echo DISABLE_INTERRUPT=on > /opt/oracle/instantclient/network/admin/sqlnet.ora
-      - name: Checkout oci8
+      - name: Checkout
         uses: actions/checkout@v4
       - name: Checkout php-src
         uses: actions/checkout@v4
@@ -60,7 +60,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{matrix.version}}
-      - name: Build oci8
+      - name: Build
         run: |
           phpize
           ./configure --with-php-config=$(command -v php-config) --with-oci8=instantclient,/opt/oracle/instantclient
@@ -69,7 +69,7 @@ jobs:
           echo 'extension=oci8.so' | sudo tee /etc/php/${{ matrix.version }}/mods-available/oci8.ini
           sudo phpenmod -v ${{ matrix.version }} oci8
           php --ri oci8
-      - name: Run Tests
+      - name: Run tests
         run: php php-src/run-tests.php --set-timeout 600 tests
         env:
           PHP_OCI8_TEST_USER: system
@@ -83,7 +83,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Get the extension matrix
+      - name: Create matrix
         id: extension-matrix
         uses: php/php-windows-builder/extension-matrix@v1
         with:
@@ -98,7 +98,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Build the extension
+      - name: Build
         uses: php/php-windows-builder/extension@v1
         with:
           php-version: ${{ matrix.php-version }}
@@ -113,7 +113,7 @@ jobs:
     needs: windows
     if: ${{ github.event_name == 'release' }}
     steps:
-      - name: Upload artifact to the release
+      - name: Upload release artifact
         uses: php/php-windows-builder/release@v1
         with:
           release: ${{ github.event.release.tag_name }}
