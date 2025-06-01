@@ -19,6 +19,10 @@ oci8.default_prefetch=5
 
 // Initialization
 
+$dbaseFromInside = getenv('GITHUB_ACTION')
+    ? preg_replace('~:15\d\d~', ':1521', $dbase)
+    : $dbase;
+
 $stmtarray = array(
     "alter session set nls_date_format = 'MM/DD/YYYY'",
 
@@ -26,7 +30,7 @@ $stmtarray = array(
 
     "drop table bug41069_tab",
 
-    "create shared database link bug41069_dblink authenticated by $user identified by $password using '$dbase'",
+    "create shared database link bug41069_dblink authenticated by $user identified by $password using '$dbaseFromInside'",
 
     "create table bug41069_tab
     (
