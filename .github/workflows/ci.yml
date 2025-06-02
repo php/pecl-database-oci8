@@ -98,7 +98,7 @@ jobs:
         env:
           PHP_OCI8_TEST_USER: system
           PHP_OCI8_TEST_PASS: my_pass
-          PHP_OCI8_TEST_DB: 0.0.0.0:1518/FREEPDB1
+          PHP_OCI8_TEST_DB: 0.0.0.0:1518/XE
       - name: Run tests /w Oracle 23
         if: success() || failure()
         run: php php-src/run-tests.php --show-diff --show-slow 1000 --set-timeout 120 tests
