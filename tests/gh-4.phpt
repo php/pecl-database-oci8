@@ -22,7 +22,7 @@ foreach (array_keys($memUsages) as $k) {
     $res = $row['v']->load();
     if ($res !== $expectedStr) {
         var_dump([$expectedStr, $res]);
-        echo (string) (new \Exception('unexpected result'));
+        throw new \Exception('unexpected result');
     }
 
     $memUsages[$k] = memory_get_usage();
@@ -33,7 +33,7 @@ $memUsages = array_unique($memUsages);
 
 if (count($memUsages) !== 1) {
     var_dump($memUsages);
-    echo (string) (new \Exception('memory leak detected'));
+    throw new \Exception('memory leak detected');
 }
 
 echo "ok\n";
