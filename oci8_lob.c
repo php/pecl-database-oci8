@@ -93,6 +93,8 @@ php_oci_descriptor *php_oci_lob_create (php_oci_connection *connection, zend_lon
 		if (!connection->descriptors) {
 			ALLOC_HASHTABLE(connection->descriptors);
 			zend_hash_init(connection->descriptors, 0, NULL, php_oci_descriptor_flush_hash_dtor, 0);
+			/* Avoid conversion from packed to mixed later. */
+			zend_hash_real_init_mixed(connection->descriptors);
 			connection->descriptor_count = 0;
 		}
 
