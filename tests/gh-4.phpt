@@ -25,7 +25,6 @@ foreach (array_keys($memUsages) as $k) {
         echo (string) (new \Exception('unexpected result'));
     }
 
-    gc_collect_cycles();
     $memUsages[$k] = memory_get_usage();
 }
 
