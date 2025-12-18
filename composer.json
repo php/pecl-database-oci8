@@ -1,0 +1,53 @@
+{
+    "name": "php/oci8",
+    "type": "php-ext",
+    "description": "The OCI8 extension lets you access Oracle Database.",
+    "keywords": ["oracle", "database", "oci8"],
+    "homepage": "https://github.com/php/pecl-database-oci8",
+    "license": "PHP-3.01",
+    "authors": [
+        {
+            "name": "Christopher Jones",
+            "email": "sixd@php.net",
+            "role": "Lead"
+        },
+        {
+            "name": "Sharad Chandran R",
+            "email": "sharad.raju@oracle.com",
+            "role": "Lead"
+        },
+        {
+            "name": "Tianfang Yang",
+            "email": "tianfyan@php.net",
+            "role": "Lead"
+        },
+        {
+            "name": "Antony Dovgal",
+            "email": "tony2001@php.net",
+            "role": "Lead"
+        },
+        {
+            "name": "Wez Furlong",
+            "email": "wez@php.net",
+            "role": "Lead"
+        },
+        {
+            "name": "Andi Gutmans",
+            "email": "andi@zend.com",
+            "role": "Lead"
+        }
+    ],
+    "require": {
+        "php": ">=8.2.0"
+    },
+    "php-ext": {
+        "extension-name": "oci8",
+        "configure-options": [
+            {
+                "name": "with-oci8",
+                "description": "Please provide the path to the ORACLE_HOME directory. Use 'instantclient,/path/to/instant/client/lib' if you're compiling with Oracle Instant Client",
+                "needs-value": true
+            }
+        ]
+    }
+}

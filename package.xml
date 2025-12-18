@@ -26,6 +26,12 @@ Oracle's standard cross-version connectivity applies.  For example, PHP OCI8 lin
   <name>Christopher Jones</name>
   <user>sixd</user>
   <email>sixd@php.net</email>
+  <active>no</active>
+ </lead>
+ <lead>
+  <name>Sharad Chandran R</name>
+  <user>sharadchan87</user>
+  <email>sharad.raju@oracle.com</email>
   <active>yes</active>
  </lead>
  <lead>
