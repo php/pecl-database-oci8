@@ -37,8 +37,8 @@ Support" (ID 207303.1) for details.
 A sample configuration php.ini file is at
   https://github.com/php/pecl-database-oci8/blob/main/oci8.ini
 
-From PHP 8.4 the source code for PHP OCI8 is at:
+From PHP 8.4, the source code for PHP OCI8 is at:
   https://github.com/php/pecl-database-oci8/
 
-For earlier versions, see the PHP source, e.g.:
+For earlier versions, see the PHP source:
   https://github.com/php/php-src/tree/PHP-8.3/ext/oci8
