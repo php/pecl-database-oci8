@@ -66,9 +66,9 @@ jobs:
           # fix debug build warning: zend_signal: handler was replaced for signal (2) after startup
           echo DISABLE_INTERRUPT=on > /opt/oracle/instantclient/network/admin/sqlnet.ora
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Checkout php-src
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: php/php-src
           ref: ${{ matrix.branch }}
@@ -100,7 +100,7 @@ jobs:
       matrix: ${{ steps.extension-matrix.outputs.matrix }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Create matrix
         id: extension-matrix
         uses: php/php-windows-builder/extension-matrix@v1
@@ -115,7 +115,7 @@ jobs:
       matrix: ${{fromJson(needs.windows-matrix.outputs.matrix)}}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Build
         uses: php/php-windows-builder/extension@v1
         with:
