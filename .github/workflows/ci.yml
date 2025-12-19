@@ -12,55 +12,44 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        version: [8.2, 8.3, 8.4, 8.5, 8.6]
+        oracle: [11, 18, 21, 23]
         include:
+          - oracle: 11
+            image: wnameless/oracle-xe-11g-r2
+            port: 1511
+            options: --name=oci
+          - oracle: 18
+            image: gvenzl/oracle-xe:18-slim-faststart
+            port: 1518
+            options: --health-cmd healthcheck.sh --health-interval 10s --health-timeout 5s --health-retries 10
+          - oracle: 21
+            image: gvenzl/oracle-xe:21-slim-faststart
+            port: 1521
+            options: --health-cmd healthcheck.sh --health-interval 10s --health-timeout 5s --health-retries 10
+          - oracle: 23
+            image: gvenzl/oracle-free:23-slim
+            port: 1523
+            options: --health-cmd healthcheck.sh --health-interval 10s --health-timeout 5s --health-retries 10
           - version: 8.2
-            branch: PHP-8.2
+            branch : PHP-8.2
           - version: 8.3
-            branch: PHP-8.3
+            branch : PHP-8.3
           - version: 8.4
-            branch: PHP-8.4
+            branch : PHP-8.4
           - version: 8.5
-            branch: master
+            branch : PHP-8.5
+          - version: 8.6
+            branch : master
     services:
-      oracle-11:
-        image: wnameless/oracle-xe-11g-r2
+      oracle:
+        image: ${{ matrix.image }}
         ports:
-          - 1511:1521
+          - ${{ matrix.port }}:1521
         env:
           ORACLE_ALLOW_REMOTE: true
-      oracle-18:
-        image: gvenzl/oracle-xe:18-slim-faststart
-        ports:
-          - 1518:1521
-        env:
-          ORACLE_PASSWORD: my_pass_18
-        options: >-
-          --health-cmd healthcheck.sh
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-      oracle-21:
-        image: gvenzl/oracle-xe:21-slim-faststart
-        ports:
-          - 1521:1521
-        env:
-          ORACLE_PASSWORD: my_pass_21
-        options: >-
-          --health-cmd healthcheck.sh
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-      oracle-23:
-        image: gvenzl/oracle-free:23-slim
-        ports:
-          - 1523:1521
-        env:
-          ORACLE_PASSWORD: my_pass_23
-        options: >-
-          --health-cmd healthcheck.sh
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
+          ORACLE_PASSWORD: oracle
+        options: ${{ matrix.options }}
     runs-on: ubuntu-latest
     steps:
       - name: Setup dependencies
@@ -77,14 +66,15 @@ jobs:
           # fix debug build warning: zend_signal: handler was replaced for signal (2) after startup
           echo DISABLE_INTERRUPT=on > /opt/oracle/instantclient/network/admin/sqlnet.ora
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Checkout php-src
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: php/php-src
           ref: ${{ matrix.branch }}
           path: php-src
       - name: Setup PHP
+        id: setup-php
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{matrix.version}}
@@ -97,33 +87,12 @@ jobs:
           echo 'extension=oci8.so' | sudo tee /etc/php/${{ matrix.version }}/mods-available/oci8.ini
           sudo phpenmod -v ${{ matrix.version }} oci8
           php --ri oci8
-      - name: Run tests /w Oracle 11
+      - name: Run tests /w Oracle ${{ matrix.oracle }}
         run: php php-src/run-tests.php --show-diff --show-slow 1000 --set-timeout 120 tests
         env:
           PHP_OCI8_TEST_USER: system
           PHP_OCI8_TEST_PASS: oracle
-          PHP_OCI8_TEST_DB: 0.0.0.0:1511/XE
-      - name: Run tests /w Oracle 18
-        if: success() || failure()
-        run: php php-src/run-tests.php --show-diff --show-slow 1000 --set-timeout 120 tests
-        env:
-          PHP_OCI8_TEST_USER: system
-          PHP_OCI8_TEST_PASS: my_pass_18
-          PHP_OCI8_TEST_DB: 0.0.0.0:1518/XE
-      - name: Run tests /w Oracle 21
-        if: success() || failure()
-        run: php php-src/run-tests.php --show-diff --show-slow 1000 --set-timeout 120 tests
-        env:
-          PHP_OCI8_TEST_USER: system
-          PHP_OCI8_TEST_PASS: my_pass_21
-          PHP_OCI8_TEST_DB: 0.0.0.0:1521/XE
-      - name: Run tests /w Oracle 23
-        if: success() || failure()
-        run: php php-src/run-tests.php --show-diff --show-slow 1000 --set-timeout 120 tests
-        env:
-          PHP_OCI8_TEST_USER: system
-          PHP_OCI8_TEST_PASS: my_pass_23
-          PHP_OCI8_TEST_DB: 0.0.0.0:1523/FREEPDB1
+          PHP_OCI8_TEST_DB: 0.0.0.0:${{ matrix.port }}/${{ matrix.oracle == 23 && 'FREEPDB1' || 'XE' }}
 
   windows-matrix:
     runs-on: ubuntu-latest
@@ -131,12 +100,12 @@ jobs:
       matrix: ${{ steps.extension-matrix.outputs.matrix }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Create matrix
         id: extension-matrix
         uses: php/php-windows-builder/extension-matrix@v1
         with:
-          php-version-list: '8.2, 8.3, 8.4, master'
+          php-version-list: '8.2, 8.3, 8.4, 8.5'
 
   windows:
     needs: windows-matrix
@@ -146,7 +115,7 @@ jobs:
       matrix: ${{fromJson(needs.windows-matrix.outputs.matrix)}}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Build
         uses: php/php-windows-builder/extension@v1
         with:

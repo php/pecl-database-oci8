@@ -1938,7 +1938,8 @@ PHP_FUNCTION(oci_password_change)
 		}
 		RETURN_RES(connection->id);
 	}
-	WRONG_PARAM_COUNT;
+	zend_wrong_param_count();
+    RETURN_THROWS();
 }
 /* }}} */
 
