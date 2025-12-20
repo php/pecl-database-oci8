@@ -1,5 +1,5 @@
 {
-    "name": "php/oci8",
+    "name": "oracle/oci8",
     "type": "php-ext",
     "description": "The OCI8 extension lets you access Oracle Database.",
     "keywords": ["oracle", "database", "oci8"],
