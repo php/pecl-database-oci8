@@ -6,7 +6,6 @@ oci8
 <?php
 require_once 'skipifconnectfailure.inc';
 require __DIR__.'/connect.inc';
-if (strcasecmp($user, "system") && strcasecmp($user, "sys")) die("skip needs to be run as a DBA user");
 if ($test_drcp) die("skip as Output might vary with DRCP");
 
 preg_match('/.*Release ([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)*/', oci_server_version($c), $matches);
