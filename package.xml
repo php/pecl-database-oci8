@@ -10,7 +10,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <description>
 The OCI8 extension lets you access Oracle Database.
 
-Use 'pecl install oci8' to install for PHP 8.2 and PHP 8.3.
+Use 'pecl install oci8' to install for PHP 8.2, PHP 8.3, PHP 8.4 and PHP 8.5.
 
 Use 'pecl install oci8-3.2.1' to install for PHP 8.1.
 
@@ -59,12 +59,12 @@ Oracle's standard cross-version connectivity applies.  For example, PHP OCI8 lin
   <active>no</active>
  </lead>
 
- <date>2024-07-24</date>
+ <date>2024-12-23</date>
  <time>12:00:00</time>
 
   <version>
-   <release>3.4.0</release>
-   <api>3.4.0</api>
+   <release>3.4.1</release>
+   <api>3.4.1</api>
   </version>
   <stability>
    <release>stable</release>
@@ -72,11 +72,11 @@ Oracle's standard cross-version connectivity applies.  For example, PHP OCI8 lin
   </stability>
   <license uri="http://www.php.net/license">PHP</license>
   <notes>
-    This version has been tested with PHP 8.2 and PHP 8.3.
+    This version has been tested with PHP 8.2, PHP 8.3, PHP 8.4 and PHP 8.5.
 
     Requires Oracle Client libraries from 11.2 or later.
 
-    Added oci_pconnect() support for Oracle wallets 
+    Minor updates for package bug fix, PIE migration and upcoming PHP release.
   </notes>
  <contents>
   <dir name="/">
@@ -462,6 +462,25 @@ Oracle's standard cross-version connectivity applies.  For example, PHP OCI8 lin
   <configureoption default="autodetect" name="with-oci8" prompt="Please provide the path to the ORACLE_HOME directory. Use &apos;instantclient,/path/to/instant/client/lib&apos; if you&apos;re compiling with Oracle Instant Client" />
  </extsrcrelease>
  <changelog>
+
+<release>
+  <version>
+   <release>3.4.0</release>
+   <api>3.4.0</api>
+  </version>
+  <stability>
+   <release>stable</release>
+   <api>stable</api>
+  </stability>
+  <license uri="http://www.php.net/license">PHP</license>
+  <notes>
+    This version has been tested with PHP 8.2 and PHP 8.3.
+
+    Requires Oracle Client libraries from 11.2 or later.
+
+    Added oci_pconnect() support for Oracle wallets.
+  </notes>
+</release>
 
 <release>
   <version>

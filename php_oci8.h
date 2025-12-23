@@ -24,11 +24,11 @@
 */
 
 #ifdef HAVE_OCI8
-# ifndef PHP_OCI8_H
-#  define PHP_OCI8_H
+#ifndef PHP_OCI8_H
+#define PHP_OCI8_H
 
 #ifdef ZTS
-# include "TSRM.h"
+#include "TSRM.h"
 #endif
 
 /*
@@ -40,7 +40,7 @@
  */
 #undef PHP_OCI8_VERSION
 #endif
-#define PHP_OCI8_VERSION "3.4.0"
+#define PHP_OCI8_VERSION "3.4.1"
 
 extern zend_module_entry oci8_module_entry;
 #define phpext_oci8_ptr &oci8_module_entry
@@ -48,16 +48,15 @@ extern zend_module_entry oci8_module_entry;
 #define phpext_oci8_12c_ptr &oci8_module_entry
 #define phpext_oci8_19_ptr &oci8_module_entry
 
-
 PHP_MINIT_FUNCTION(oci);
 PHP_RINIT_FUNCTION(oci);
 PHP_MSHUTDOWN_FUNCTION(oci);
 PHP_RSHUTDOWN_FUNCTION(oci);
 PHP_MINFO_FUNCTION(oci);
 
-# endif /* !PHP_OCI8_H */
-#else /* !HAVE_OCI8 */
+#endif /* !PHP_OCI8_H */
+#else  /* !HAVE_OCI8 */
 
-# define oci8_module_ptr NULL
+#define oci8_module_ptr NULL
 
 #endif /* HAVE_OCI8 */
