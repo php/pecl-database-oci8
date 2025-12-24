@@ -12,7 +12,7 @@ phpinfo(INFO_MODULES);
 $phpinfo = ob_get_clean();
 if (preg_match('/Compile-time ORACLE_HOME/', $phpinfo) !== 1) {
     // Assume building PHP with an ORACLE_HOME means the tested DB is on the same machine as PHP
-    die("skip this test won't work with remote Oracle");
+    die("skip this test won't work with a remote Oracle Database");
 }
 if (substr(PHP_OS, 0, 3) == 'WIN') die("skip Test script not ported to Windows");
 ?>
