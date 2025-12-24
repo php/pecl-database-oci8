@@ -58,7 +58,7 @@ function get_clob_loc($c, $sql, $pfl) {
     while (($row = oci_fetch_array($stid, OCI_ASSOC)) != false) {
         $l[] = $row['CLOB']->load();
         $row['CLOB']->free();
-        if (strlen($l[0]) != LOBSIZE) { print("strlen(l) failure" .  strlen($l)); exit; }
+        if (strlen($l[0]) != LOBSIZE) { print("strlen(l) failure. clob length = " .  strlen($l[0])); exit; }
     }
     return($l);
 }
@@ -71,7 +71,7 @@ function get_clob_inline($c, $sql, $pfl) {
     $l = [];
     while (($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_LOBS)) != false) {
         $l[] = $row['CLOB'];
-        if (strlen($l[0]) != LOBSIZE) { print("strlen(l) failure" . strlen($l)); exit; }
+        if (strlen($l[0]) != LOBSIZE) { print("strlen(l) failure. clob length = " . strlen($l[0])); exit; }
     }
     return($l);
 }
@@ -99,7 +99,7 @@ function get_blob_loc($c, $sql, $pfl) {
     while (($row = oci_fetch_array($stid, OCI_ASSOC)) != false) {
         $l[] = $row['BLOB']->load();
         $row['BLOB']->free();
-        if (strlen($l[0]) != LOBSIZE) { print("strlen(l) failure" .  strlen($l)); exit; }
+        if (strlen($l[0]) != LOBSIZE) { print("strlen(l) failure. blob length = " .  strlen($l[0])); exit; }
     }
     return($l);
 }
