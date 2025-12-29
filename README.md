@@ -43,6 +43,11 @@ OCI8 linked with Instant Client 19c can connect to Oracle Database 11.2 or
 later. See Oracle Support's note "Oracle Client / Server Interoperability
 Support" (ID 207303.1) for details.
 
+Tests
+-----
+
+To run the tests, see [tests/README.md](tests/README.md).
+
 Useful Links
 ------------
 

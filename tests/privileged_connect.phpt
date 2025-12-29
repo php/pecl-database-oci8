@@ -5,6 +5,8 @@ oci8
 --SKIPIF--
 <?php
 require_once 'skipifconnectfailure.inc';
+
+if (ini_get('oci8.privileged_connect') == 1) die('skip as privileged_connect is enabled');
 ?>
 --FILE--
 <?php

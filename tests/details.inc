@@ -20,6 +20,11 @@ if (file_exists(dirname(__FILE__)."/details_local.inc")) {
         $user		= getenv('PHP_OCI8_TEST_USER');	  // Database username for tests
         $password	= getenv('PHP_OCI8_TEST_PASS');	  // Password for $user
         $dbase		= getenv('PHP_OCI8_TEST_DB');	  // Database connection string
+        if (false !== getenv('PHP_OCI8_TEST_SYSUSER')) {
+            $sysuser = getenv('PHP_OCI8_TEST_SYSUSER');
+            $syspassword = getenv('PHP_OCI8_TEST_SYSPASS');
+            if (false === $syspassword) die('skip as system password is not specified');
+        }
         $test_drcp	= getenv('PHP_OCI8_TEST_DRCP');
         if (false !== $test_drcp && 0 == strcasecmp($test_drcp,'TRUE')) {
             $test_drcp = TRUE;
@@ -31,6 +36,8 @@ if (file_exists(dirname(__FILE__)."/details_local.inc")) {
         $password					= "oracle";
         $dbase						= "localhost/XE";
         $test_drcp					= FALSE;
+        $sysuser                    = "system";
+        $syspass                    = "oracle";
     }
 
     /*

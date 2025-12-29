@@ -4,12 +4,9 @@ oci_set_db_operation: basic test for end-to-end tracing
 oci8
 --SKIPIF--
 <?php
-require_once 'skipifconnectfailure.inc';
+require_once 'skipifsysdbaconnectfailure.inc';
 $target_dbs = array('oracledb' => true, 'timesten' => false);  // test runs on these DBs
 require __DIR__.'/skipif.inc';
-if (strcasecmp($user, "system") && strcasecmp($user, "sys")) {
-    die("skip needs to be run as a DBA user");
-}
 preg_match('/.*Release ([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)*/', oci_server_version($c), $matches);
 if (!(isset($matches[0]) && $matches[1] >= 12)) {
     die("skip expected output only valid when using Oracle Database 12c or greater");
