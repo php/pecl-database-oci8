@@ -8,7 +8,7 @@ Installation
 --------------------
 The PHP OCI8 extension is available in the PECL repository [here](https://pecl.php.net/package/oci8).
 
-Use `pecl install oci8` to install for PHP 8.2 and PHP 8.3.
+Use `pecl install oci8` to install for PHP 8.2 and newer versions.
 
 Use `pecl install oci8-3.2.1` to install for PHP 8.1.
 
