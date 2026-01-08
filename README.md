@@ -5,7 +5,10 @@ Use the PHP OCI8 extension to access Oracle Database.
 Documentation is at https://www.php.net/oci8.
 
 Installation
---------------------
+-------------
+
+**PECL**
+
 The PHP OCI8 extension is available in the PECL repository [here](https://pecl.php.net/package/oci8).
 
 Use `pecl install oci8` to install for PHP 8.2 and newer versions.
@@ -28,6 +31,17 @@ On Windows, pre-compiled OCI8 DLLs are available for download and quick use from
 the [PECL repository](https://pecl.php.net/package/oci8). You may use the DLL directly
 by including them in the `php.ini` file.
 See [OCI8 installation](https://www.php.net/manual/en/oci8.installation.php) for more details.
+
+**PIE**
+
+The PHP OCI8 extension is also available in the PIE repository [here](https://packagist.org/packages/oci8/oci8).
+
+To install from PIE, use the [pie](https://github.com/php/pie/releases) utility and run:
+```
+pie install oci8/oci8
+```
+
+**Installation Dependencies**
 
 The PHP OCI8 extension can be linked with Oracle Client libraries from Oracle
 Database 11.2 or later. These libraries are found in your database
